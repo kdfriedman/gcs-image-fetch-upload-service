@@ -1,0 +1,82 @@
+const express = require("express");
+const dotenv = require("dotenv");
+const morgan = require("morgan");
+const cors = require("cors");
+const session = require("express-session");
+const passport = require("passport");
+
+// load config file
+dotenv.config({ path: "./app/config/config.env" });
+
+// init app
+const app = express();
+
+// passport config
+require("./config/passport")(passport);
+
+// log to console in development using morgan package
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
+
+// allows access to the body object of the request
+app.use(express.json());
+
+// exposes static resources in public folder
+app.use(express.static("public"));
+
+// set express CORS options
+const corsOptions = {
+  origin: process.env.ORIGIN ?? "http://localhost:3000",
+  optionsSuccessStatus: 200,
+  allowedHeaders: [
+    "Origin",
+    "X-Requested-With",
+    "Content-Type",
+    "Accept",
+    "Accept-Language",
+    "Content-Language",
+  ],
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+};
+
+// enable CORS middleware
+app.use(cors(corsOptions));
+
+// set view engine to pug - template engine
+app.set("view engine", "pug");
+
+// set template directory as ./views
+app.set("views", `${__dirname}/views`);
+
+// Sessions middleware
+app.use(
+  session({
+    secret: "image-fetcher-service",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: process.env.NODE_ENV === "development" ? false : true,
+    },
+  })
+);
+
+// passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use("/", require("./routes/index"));
+app.use("/auth", require("./routes/auth"));
+
+// error handler middleware
+app.use((error, req, res, next) => {
+  console.error(error);
+  res
+    .status(500)
+    .send(
+      `HTTP 500 - There is an issue with the server, please try again later.`
+    );
+});
+
+module.exports = app;
