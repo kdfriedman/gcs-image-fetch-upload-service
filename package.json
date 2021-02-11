@@ -1,30 +1,37 @@
 {
   "name": "creative-annotation-google-ads-service",
   "version": "1.0.0",
-  "description": "Service to fetch Google Ads asset data",
+  "description": "Fetch images from imported CSV file and drop into GCP storage bucket.",
   "main": "app.js",
-  "scripts": {
-    "start": "cross-env NODE_ENV=production node ./app/app.js",
-    "dev": "cross-env NODE_ENV=development nodemon ./app/server.js"
-  },
-  "author": "Kevin Friedman",
-  "license": "MIT",
   "dependencies": {
     "axios": "^0.21.1",
-    "cookie-parser": "^1.4.5",
+    "connect-mongo": "^3.2.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "express-handlebars": "^5.2.0",
     "express-session": "^1.17.1",
     "moment": "^2.29.1",
     "morgan": "^1.10.0",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0",
-    "pug": "^3.0.0"
+    "pug": "^3.0.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.12.13",
+    "@babel/preset-env": "^7.12.13",
+    "@babel/preset-react": "^7.12.13",
+    "babel-loader": "^8.2.2",
     "cross-env": "^7.0.3",
-    "nodemon": "^2.0.7"
-  }
+    "nodemon": "^2.0.7",
+    "webpack": "^5.21.2",
+    "webpack-cli": "^4.5.0"
+  },
+  "scripts": {
+    "dev": "cross-env webpack --mode development --hot && NODE_ENV=development nodemon app/server.js",
+    "build": "cross-env webpack --mode production && NODE_ENV=production node app/server.js"
+  },
+  "author": "Kevin Friedman",
+  "license": "MIT"
 }

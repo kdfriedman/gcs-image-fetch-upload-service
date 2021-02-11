@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 const session = require("express-session");
 const passport = require("passport");
+const MongoStore = require("connect-mongo")(session);
 
 // load config file
 dotenv.config({ path: "./app/config/config.env" });
@@ -53,11 +54,13 @@ app.set("views", `${__dirname}/views`);
 // Sessions middleware
 app.use(
   session({
-    secret: "image-fetcher-service",
+    store: new MongoStore({ url: process.env.MONGO_CONNECTION_STRING }),
+    secret: process.env.SECRET_KEY,
     resave: false,
     saveUninitialized: false,
     cookie: {
       secure: process.env.NODE_ENV === "development" ? false : true,
+      maxAge: 1000 * 60 * 1440,
     },
   })
 );

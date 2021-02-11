@@ -38,15 +38,15 @@ body {
   min-height: 100%;
 }
 
-/* login */
-
-.login__container {
+.container {
   display: flex;
   justify-content: flex-start;
   flex-flow: column nowrap;
   margin: 2rem;
   padding: 2rem;
 }
+
+/* login */
 
 .login__message {
   font-size: 2rem;
