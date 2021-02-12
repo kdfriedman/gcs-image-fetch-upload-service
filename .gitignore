@@ -1,12 +1,16 @@
-config.env# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
 /node_modules
 /.pnp
 .pnp.js
+config.env
+.env
+
 
 # production
 /public
+
+# service acct
+/data-science-dev-huge-4bec8dc58e8a.json
 
 # misc
 .DS_Store

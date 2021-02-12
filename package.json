@@ -4,6 +4,7 @@
   "description": "Fetch images from imported CSV file and drop into GCP storage bucket.",
   "main": "app.js",
   "dependencies": {
+    "@google-cloud/storage": "^5.7.4",
     "axios": "^0.21.1",
     "connect-mongo": "^3.2.0",
     "cors": "^2.8.5",
@@ -16,7 +17,8 @@
     "passport-google-oauth20": "^2.0.0",
     "pug": "^3.0.0",
     "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react-dom": "^17.0.1",
+    "regenerator-runtime": "^0.13.7"
   },
   "devDependencies": {
     "@babel/core": "^7.12.13",

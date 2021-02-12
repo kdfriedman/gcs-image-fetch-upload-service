@@ -7,7 +7,7 @@ const passport = require("passport");
 const MongoStore = require("connect-mongo")(session);
 
 // load config file
-dotenv.config({ path: "./app/config/config.env" });
+dotenv.config({ path: "./config.env" });
 
 // init app
 const app = express();
@@ -71,6 +71,7 @@ app.use(passport.session());
 
 app.use("/", require("./routes/index"));
 app.use("/auth", require("./routes/auth"));
+app.use("/api/v1", require("./routes/api"));
 
 // error handler middleware
 app.use((error, req, res, next) => {

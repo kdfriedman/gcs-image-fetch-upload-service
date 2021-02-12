@@ -92,6 +92,14 @@ body {
   margin: 2rem 0;
 }
 
+.success__bucket-available {
+  font-size: 1.3rem;
+  color: black;
+  text-decoration: none;
+  font-weight: 500;
+  margin: 2rem 0;
+}
+
 .success__button {
   background-color: #090979;
   border-radius: 8px;
