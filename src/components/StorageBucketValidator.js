@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const Form = (props) => {
+const StorageBucketValidator = ({
+  bucketStatus,
+  updateBucketStatus,
+  profile,
+}) => {
   // two way binding for modal form - update state with input value
   const [inputValue, setInputValue] = useState("");
   const [bucketName, updateBucketName] = useState("");
-  const [bucketStatus, updateBucketStatus] = useState(false);
+  // const [bucketStatus, updateBucketStatus] = useState(false);
   const [bucketError, updateBucketError] = useState(null);
 
   // bind input to input value attribute
@@ -19,16 +23,18 @@ const Form = (props) => {
     e.preventDefault();
     const form = e.currentTarget.closest("form").elements;
     const bucketStorageInput = form["bucketStorageInput"];
+    // check if bucket input has value, then return with error
+    if (bucketStorageInput.value === "") {
+      return updateBucketError("Invalid submit: Please enter a bucket name");
+    }
     if (bucketStorageInput.value === bucketName) return;
 
     // reset bucket error state
     updateBucketError(null);
     // clear bucket status from previous request
     updateBucketStatus(false);
-    // check if bucket input has value, then return with error
-    if (bucketStorageInput.value === "") {
-      return updateBucketError("Invalid submit: Please enter a bucket name");
-    }
+
+    //update bucket name state with new input value
     updateBucketName(bucketStorageInput.value);
   };
 
@@ -53,9 +59,10 @@ const Form = (props) => {
             }
             if (error.request) {
               // The request was made but no response was received
-              // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-              // http.ClientRequest in node.js
-              return updateBucketError(error.request.toString());
+              // possibly a network error
+              return updateBucketError(
+                "Status Failed: The server did not return a response. This may be due to a network error."
+              );
             }
             // Something happened in setting up the request that triggered an Error
             console.log("Error", error.message);
@@ -70,8 +77,8 @@ const Form = (props) => {
   return (
     <div className="container">
       <h1 className="success__message">
-        Welcome, {props?.profile?.profile?.name?.givenName || "friend"}! Thanks
-        for authenticating with your Huge account.
+        Welcome, {profile?.name?.givenName || "friend"}! Thanks for
+        authenticating with your Huge account.
       </h1>
       <form onSubmit={(e) => handleSubmit(e)}>
         <label className="success__bucket-name">
@@ -98,4 +105,4 @@ const Form = (props) => {
   );
 };
 
-export default Form;
+export default StorageBucketValidator;
