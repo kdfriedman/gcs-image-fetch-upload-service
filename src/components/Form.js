@@ -6,6 +6,7 @@ const Form = (props) => {
   const [inputValue, setInputValue] = useState("");
   const [bucketName, updateBucketName] = useState("");
   const [bucketStatus, updateBucketStatus] = useState(false);
+  const [bucketError, updateBucketError] = useState(null);
 
   // bind input to input value attribute
   const bindInputToValue = (e) => {
@@ -18,25 +19,50 @@ const Form = (props) => {
     e.preventDefault();
     const form = e.currentTarget.closest("form").elements;
     const bucketStorageInput = form["bucketStorageInput"];
+    if (bucketStorageInput.value === bucketName) return;
+
+    // reset bucket error state
+    updateBucketError(null);
+    // clear bucket status from previous request
+    updateBucketStatus(false);
+    // check if bucket input has value, then return with error
+    if (bucketStorageInput.value === "") {
+      return updateBucketError("Invalid submit: Please enter a bucket name");
+    }
     updateBucketName(bucketStorageInput.value);
   };
 
   useEffect(() => {
     (async () => {
-      try {
-        const fetchData = async () => {
-          const data = await axios.post(process.env.API_ENDPOINT, {
+      const fetchData = async () => {
+        axios
+          .post(process.env.API_ENDPOINT, {
             bucketName,
+          })
+          .then((data) => {
+            console.log(data);
+            // descructure bool val from bucket status response
+            const [hasRequestedBucket] = data.data;
+            updateBucketStatus(hasRequestedBucket);
+          })
+          .catch((error) => {
+            if (error.response) {
+              // The request was made and the server responded with a status code
+              // that falls out of the range of 2xx
+              return updateBucketError(error.response.data);
+            }
+            if (error.request) {
+              // The request was made but no response was received
+              // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+              // http.ClientRequest in node.js
+              return updateBucketError(error.request.toString());
+            }
+            // Something happened in setting up the request that triggered an Error
+            console.log("Error", error.message);
           });
-          // descructure bool val from bucket status response
-          const [hasRequestedBucket] = data.data;
-          updateBucketStatus(hasRequestedBucket);
-        };
-        if (bucketName !== "") {
-          fetchData();
-        }
-      } catch (err) {
-        console.error(err);
+      };
+      if (bucketName !== "") {
+        fetchData();
       }
     })();
   }, [bucketName]);
@@ -48,6 +74,9 @@ const Form = (props) => {
         for authenticating with your Huge account.
       </h1>
       <form onSubmit={(e) => handleSubmit(e)}>
+        <label className="success__bucket-name">
+          Enter the name of your storage bucket
+        </label>
         <input
           id="bucketStorageInput"
           name="bucket-input"
@@ -59,6 +88,9 @@ const Form = (props) => {
           Find Storage Bucket
         </button>
       </form>
+      {bucketError && (
+        <div className="success__bucket-error">{bucketError}</div>
+      )}
       {bucketStatus && (
         <div className="success__bucket-available">Bucket is available</div>
       )}

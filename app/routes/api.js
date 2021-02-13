@@ -12,13 +12,20 @@ router.post("/storage", validateAuth, (req, res) => {
       );
       if (!hasStorageBucket[0]) {
         return res
-          .status(404)
-          .send("HTTP 404: There is no available storage bucket to access");
+          .status(403)
+          .json(
+            "403 Forbidden: You do not have access to the Google Cloud Storage bucket"
+          );
       }
       // return bucket status as 201
       res.status(201).json(hasStorageBucket);
     } catch (err) {
       console.error(err);
+      return res
+        .status(403)
+        .json(
+          "403 Forbidden: You do not have access to the Google Cloud Storage bucket"
+        );
     }
   })();
 });

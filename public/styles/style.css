@@ -85,25 +85,25 @@ body {
 }
 
 .success__message {
-  font-size: 2rem;
+  font-size: 2.5rem;
   color: black;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 700;
   margin: 2rem 0;
 }
 
 .success__bucket-available {
-  font-size: 1.3rem;
-  color: black;
   text-decoration: none;
+  color: #30a52e;
+  font-size: 1.5rem;
   font-weight: 500;
-  margin: 2rem 0;
+  margin: 1rem 0 0;
 }
 
 .success__button {
   background-color: #090979;
   border-radius: 8px;
-  padding: 1.25rem;
+  padding: 1rem;
   box-shadow: 0 0.75rem 1.5rem rgb(18 38 63 / 3%);
   border: 1px solid #edf2f9;
   font-size: 2rem;
@@ -111,6 +111,37 @@ body {
   cursor: pointer;
   text-decoration: none;
   align-self: flex-start;
-  width: 17rem;
+  width: 22rem;
   text-align: center;
+}
+
+/* bucket storage */
+form {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+#bucketStorageInput {
+  padding: 1rem;
+  margin: 0.75rem 0 1.5rem 0;
+  border: 0.0625rem solid #b5b5b5;
+  border-radius: 0.4rem;
+  height: 5rem;
+  font-size: 18px;
+  max-width: 40rem;
+}
+
+.success__bucket-name {
+  font-size: 2rem;
+  color: black;
+  text-decoration: none;
+  font-weight: 500;
+  margin-top: 4rem;
+}
+
+.success__bucket-error {
+  color: #c5221f;
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin: 1rem 0 0;
 }
