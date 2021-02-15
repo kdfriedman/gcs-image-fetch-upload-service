@@ -1,4 +1,5 @@
 const express = require("express");
+const fileUpload = require("express-fileupload");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 const cors = require("cors");
@@ -64,6 +65,9 @@ app.use(
     },
   })
 );
+
+// initialize file-uploader to access files from req object
+app.use(fileUpload());
 
 // passport middleware
 app.use(passport.initialize());

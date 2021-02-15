@@ -38,12 +38,25 @@ body {
   min-height: 100%;
 }
 
-.container {
+#appContainer {
   display: flex;
   justify-content: flex-start;
   flex-flow: column nowrap;
-  margin: 2rem;
-  padding: 2rem;
+}
+
+.button-container {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin: 0 2rem;
+  padding: 0 2rem;
+}
+
+/* reset padding and margin when submit button is rendered in FileSender component */
+.button-container .file-uploader__wrapper {
+  margin: 0;
+  padding: 0;
 }
 
 /* login */
@@ -144,4 +157,60 @@ form {
   font-size: 1.5rem;
   font-weight: 500;
   margin: 1rem 0 0;
+}
+
+/* File Uploader */
+.file-uploader__wrapper {
+  display: flex;
+  flex-flow: column nowrap;
+  margin: 0 2rem;
+  padding: 0 2rem;
+}
+
+.file-uploader-btn-wrapper {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.file-uploader__btn {
+  background-color: #090979;
+  border-radius: 8px;
+  box-shadow: 0 0.75rem 1.5rem rgb(18 38 63 / 3%);
+  padding: 1rem;
+  border: 1px solid #edf2f9;
+  font-size: 2rem;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+  align-self: flex-start;
+  text-align: center;
+  margin-right: 1rem;
+}
+
+.file-uploader__required-file-types {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.file-uploader__file-name {
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+/* file sender */
+.file-sender__submit-button {
+  background-color: #090979;
+  border-radius: 8px;
+  box-shadow: 0 0.75rem 1.5rem rgb(18 38 63 / 3%);
+  padding: 1rem;
+  border: 1px solid #edf2f9;
+  font-size: 2rem;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+  align-self: flex-start;
+  text-align: center;
+  margin-right: 1rem;
 }

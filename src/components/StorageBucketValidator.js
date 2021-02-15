@@ -38,44 +38,45 @@ const StorageBucketValidator = ({
     updateBucketName(bucketStorageInput.value);
   };
 
+  // data fetcher for storage bucket status
+  const fetchData = () => {
+    axios
+      .post(process.env.API_STORAGE_ENDPOINT, {
+        bucketName,
+      })
+      .then((data) => {
+        // descructure bool val from bucket status response
+        const [hasRequestedBucket] = data.data;
+        updateBucketStatus(hasRequestedBucket);
+      })
+      .catch((error) => {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          return updateBucketError(error.response.data);
+        }
+        if (error.request) {
+          // The request was made but no response was received
+          // possibly a network error
+          return updateBucketError(
+            "Status Failed: The server did not return a response. This may be due to a network error."
+          );
+        }
+        // Something happened in setting up the request that triggered an Error
+        console.log("Error", error.message);
+      });
+  };
+
+  // handle side effects with async data function
+  // only run if bucketName has been updated with value
   useEffect(() => {
-    (async () => {
-      const fetchData = async () => {
-        axios
-          .post(process.env.API_ENDPOINT, {
-            bucketName,
-          })
-          .then((data) => {
-            console.log(data);
-            // descructure bool val from bucket status response
-            const [hasRequestedBucket] = data.data;
-            updateBucketStatus(hasRequestedBucket);
-          })
-          .catch((error) => {
-            if (error.response) {
-              // The request was made and the server responded with a status code
-              // that falls out of the range of 2xx
-              return updateBucketError(error.response.data);
-            }
-            if (error.request) {
-              // The request was made but no response was received
-              // possibly a network error
-              return updateBucketError(
-                "Status Failed: The server did not return a response. This may be due to a network error."
-              );
-            }
-            // Something happened in setting up the request that triggered an Error
-            console.log("Error", error.message);
-          });
-      };
-      if (bucketName !== "") {
-        fetchData();
-      }
-    })();
+    if (bucketName !== "") {
+      fetchData();
+    }
   }, [bucketName]);
 
   return (
-    <div className="container">
+    <div className="success__container">
       <h1 className="success__message">
         Welcome, {profile?.name?.givenName || "friend"}! Thanks for
         authenticating with your Huge account.
