@@ -1,5 +1,5 @@
 {
-  "name": "creative-annotation-google-ads-service",
+  "name": "image-annotator",
   "version": "1.0.0",
   "description": "Fetch images from imported CSV file and drop into GCP storage bucket.",
   "main": "app.js",
