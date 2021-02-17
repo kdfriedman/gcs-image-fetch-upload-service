@@ -1,8 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const checkStorageBucketStatus = require("../config/gcp-storage/storage-buckets");
+
+const {
+  checkStorageBucketStatus,
+  uploadFileToStorageBucket,
+} = require("../config/gcp-storage/storage-buckets");
 const { validateAuth } = require("../middleware/auth");
 const { fetchData } = require("../data/fetchData");
+const EventEmitter = require("events");
+const directoryListEventEmitter = new EventEmitter();
 
 router.post("/storage", validateAuth, (req, res) => {
   (async () => {
@@ -42,10 +48,15 @@ router.post("/image-fetcher", validateAuth, (req, res) => {
 
   (async () => {
     try {
-      // TODO: figure out why all requests are rejecting,
-      // make sure the output of a get req comes back as an img file
+      // fetch images from endpoint using csv file as input
       const fetchedImageList = await fetchData(removedHeaderCSVData);
-      console.log(fetchedImageList);
+      // update image list to storage bucket
+      // pass in bucket name, image directory, and event emitter to send back image file from directory to use in upload
+      uploadFileToStorageBucket(
+        process.env.STORAGE_BUCKET_NAME,
+        "temp-images",
+        directoryListEventEmitter
+      );
       return res.json({
         data: "The images have been fetched and uploaded to the storage bucket",
       });
