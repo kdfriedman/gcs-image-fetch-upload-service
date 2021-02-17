@@ -2,7 +2,10 @@ const path = require("path");
 const fs = require("fs").promises;
 const { Storage } = require("@google-cloud/storage");
 const storage = new Storage();
-const { readDirectoryContents } = require("../../util/util");
+const {
+  readDirectoryContents,
+  removeDirectoryContents,
+} = require("../../util/util");
 
 const checkStorageBucketStatus = async (bucketName) => {
   const bucket = storage.bucket(bucketName);
@@ -10,16 +13,13 @@ const checkStorageBucketStatus = async (bucketName) => {
   return hasStorageBucket;
 };
 
-const uploadFileToStorageBucket = async (
+const uploadFileToStorageBucket = (
   bucketName,
   directoryName,
   directoryListEventEmitter
 ) => {
   // readDirectoryContents dependency injection - util function
-  const directoryContents = readDirectoryContents(
-    directoryName,
-    directoryListEventEmitter
-  );
+  readDirectoryContents(directoryName, directoryListEventEmitter);
 
   // listen for directory list update with files from async util function
   directoryListEventEmitter.once("directoryContentsRead", async (...files) => {
@@ -27,7 +27,6 @@ const uploadFileToStorageBucket = async (
     const directoryPath = path.join(__dirname, `../../../temp-images`);
     // flatten array to remove nested array file names
     const fileList = files.flat();
-
     // loop through file list and upload each file to storage bucket
     fileList.forEach(async (file) => {
       // Uploads a local file to the bucket
@@ -35,6 +34,8 @@ const uploadFileToStorageBucket = async (
         destination: `creative_images_input_raw/${file}`, // upload files to input folder
       });
       console.log(`${file} uploaded to ${bucketName}.`);
+      // readDirectoryContents dependency injection - util function
+      removeDirectoryContents(directoryName);
     });
   });
 };
