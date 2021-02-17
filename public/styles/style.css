@@ -44,6 +44,14 @@ body {
   flex-flow: column nowrap;
 }
 
+.container {
+  display: flex;
+  justify-content: flex-start;
+  flex-flow: column nowrap;
+  margin: 2rem;
+  padding: 2rem;
+}
+
 .button-container {
   display: flex;
   flex-flow: row nowrap;

@@ -39,20 +39,13 @@ router.post("/image-fetcher", validateAuth, (req, res) => {
   const arrOfCSVData = parsedCSVFile.split("\n");
   // remove header row from data and save in new variable reference
   const removedHeaderCSVData = arrOfCSVData.slice(1, arrOfCSVData.length - 1);
-  // map through rows of data and parse out creative names
-  const listOfCreativeNames = removedHeaderCSVData.map((data) => {
-    const splitDataColumns = data.split(",");
-    // destructure create col from row arr
-    const [creative] = splitDataColumns;
-    return creative;
-  });
+
   (async () => {
     try {
       // TODO: figure out why all requests are rejecting,
       // make sure the output of a get req comes back as an img file
-      console.log("async func is running");
-      const imageList = await fetchData(listOfCreativeNames, 9918507);
-      console.log(imageList);
+      const fetchedImageList = await fetchData(removedHeaderCSVData);
+      console.log(fetchedImageList);
       return res.json({
         data: "The images have been fetched and uploaded to the storage bucket",
       });
