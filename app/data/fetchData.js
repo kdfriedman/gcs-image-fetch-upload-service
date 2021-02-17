@@ -10,7 +10,9 @@ exports.fetchData = async (data) => {
     const [acctId, creativeName] = splitIntoCol;
     try {
       const response = await axios.get(
-        `https://s0.2mdn.net/${acctId}/${creativeName.trim()}`,
+        `${
+          process.env.CREATIVE_IMAGE_ENDPOINT
+        }/${acctId}/${creativeName.trim()}`,
         {
           responseType: "stream",
         }
