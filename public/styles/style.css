@@ -136,6 +136,10 @@ body {
   text-align: center;
 }
 
+.success__button:hover {
+  opacity: 0.8;
+}
+
 /* bucket storage */
 form {
   display: flex;
@@ -197,6 +201,10 @@ form {
   margin-right: 1rem;
 }
 
+.file-uploader__btn:hover {
+  opacity: 0.8;
+}
+
 .file-uploader__required-file-types {
   font-size: 1.4rem;
   font-weight: 700;
@@ -221,4 +229,38 @@ form {
   align-self: flex-start;
   text-align: center;
   margin-right: 1rem;
+}
+
+.file-sender__submit-button:hover {
+  opacity: 0.8;
+}
+
+/* axios loading */
+.file-sender__loader-container {
+  position: fixed;
+  bottom: 0px;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  background-color: rgba(19, 33, 68, 0.25) !important;
+}
+
+.file-sender__loader {
+  position: relative;
+  animation: spinner 0.9s linear infinite;
+  color: #d2e4ff;
+  width: 64px;
+  height: 35rem;
+  display: block;
+  margin: 17rem auto;
+}
+
+/* Animation for loader icon */
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
