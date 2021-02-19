@@ -3,13 +3,16 @@ const router = express.Router();
 
 const {
   checkStorageBucketStatus,
-  uploadFileToStorageBucket,
+  uploadImageFilesToStorageBucket,
+  uploadCSVFileToStorageBucket,
 } = require("../config/gcp-storage/storage-buckets");
 const { validateAuth } = require("../middleware/auth");
 const { fetchData } = require("../data/fetchData");
 const EventEmitter = require("events");
 const directoryListEventEmitter = new EventEmitter();
 
+// @desc    Validate Cloud Storage API
+// @route   POST /api/v1/storage
 router.post("/storage", validateAuth, (req, res) => {
   (async () => {
     try {
@@ -38,7 +41,10 @@ router.post("/storage", validateAuth, (req, res) => {
   })();
 });
 
+// @desc    Fetch images from Google
+// @route   POST /api/v1/image-fetcher
 router.post("/image-fetcher", validateAuth, (req, res) => {
+  const csvFileObject = req.files.csv;
   // convert buffer into workable string data
   const parsedCSVFile = req?.files?.csv?.data.toString();
   // split string of data into array of string row data
@@ -48,11 +54,16 @@ router.post("/image-fetcher", validateAuth, (req, res) => {
 
   (async () => {
     try {
+      // upload csv file to storage bucket
+      await uploadCSVFileToStorageBucket(
+        csvFileObject,
+        process.env.STORAGE_BUCKET_NAME
+      );
       // fetch images from endpoint using csv file as input
-      const fetchedImageList = await fetchData(removedHeaderCSVData);
+      await fetchData(removedHeaderCSVData);
       // update image list to storage bucket
       // pass in bucket name, image directory, and event emitter to send back image file from directory to use in upload
-      uploadFileToStorageBucket(
+      uploadImageFilesToStorageBucket(
         process.env.STORAGE_BUCKET_NAME,
         "temp-images",
         directoryListEventEmitter

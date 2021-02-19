@@ -13,7 +13,24 @@ const checkStorageBucketStatus = async (bucketName) => {
   return hasStorageBucket;
 };
 
-const uploadFileToStorageBucket = (
+const uploadCSVFileToStorageBucket = async (csvFile, bucketName) => {
+  try {
+    // write file to temp-files directory
+    await fs.writeFile(`./temp-files/${csvFile.name}`, csvFile.data);
+    console.log(`csv file written to ./temp-files/${csvFile.name}`);
+
+    // after csv file is written to local directory, upload to gcp storage bucket
+    await storage.bucket(bucketName).upload(`./temp-files/${csvFile.name}`, {
+      destination: `creative_images_performance_input_raw/${csvFile.name}`, // upload files to input folder
+    });
+    // remove csv file after uploading to storage bucket
+    removeDirectoryContents("temp-files");
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const uploadImageFilesToStorageBucket = (
   bucketName,
   directoryName,
   directoryListEventEmitter
@@ -40,4 +57,8 @@ const uploadFileToStorageBucket = (
   });
 };
 
-module.exports = { checkStorageBucketStatus, uploadFileToStorageBucket };
+module.exports = {
+  checkStorageBucketStatus,
+  uploadImageFilesToStorageBucket,
+  uploadCSVFileToStorageBucket,
+};
