@@ -15,9 +15,10 @@ const App = ({ profile }) => {
         updateBucketStatus={updateBucketStatus}
         bucketStatus={bucketStatus}
         profile={profile}
+        updateCSVFile={updateCSVFile}
       />
       <div className="button-container">
-        {csvFile && <FileSender csvFile={csvFile} />}
+        {bucketStatus && csvFile && <FileSender csvFile={csvFile} />}
         {/* once valid bucket is available, render file uploader component and pass in file state as props */}
         {bucketStatus && (
           <FileUploader csvFile={csvFile} updateCSVFile={updateCSVFile} />

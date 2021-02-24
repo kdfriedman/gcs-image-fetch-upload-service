@@ -5,11 +5,13 @@ const StorageBucketValidator = ({
   bucketStatus,
   updateBucketStatus,
   profile,
+  updateCSVFile,
 }) => {
   // two way binding for modal form - update state with input value
   const [inputValue, setInputValue] = useState("");
+  // bucket input value state
   const [bucketName, updateBucketName] = useState("");
-  // const [bucketStatus, updateBucketStatus] = useState(false);
+  //bucket error state
   const [bucketError, updateBucketError] = useState(null);
 
   // bind input to input value attribute
@@ -25,6 +27,8 @@ const StorageBucketValidator = ({
     const bucketStorageInput = form["bucketStorageInput"];
     // check if bucket input has value, then return with error
     if (bucketStorageInput.value === "") {
+      // reset bucket status state
+      updateBucketStatus(false);
       return updateBucketError("Invalid submit: Please enter a bucket name");
     }
     if (bucketStorageInput.value === bucketName) return;
@@ -53,6 +57,8 @@ const StorageBucketValidator = ({
         if (error.response) {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
+          // reset csv file for file uploader on error, if any existed prior to failed req
+          updateCSVFile(null);
           return updateBucketError(error.response.data);
         }
         if (error.request) {
