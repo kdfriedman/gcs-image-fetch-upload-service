@@ -15,7 +15,7 @@ Install node_modules
 1. Create new Google Cloud Platform Project ([GCP create project](https://console.cloud.google.com/projectcreate))
 2. Create new GCP storage bucket ([See details](https://console.cloud.google.com/storage/create-bucket))
 3. Generate a new OAuth Client ID (apis & services > credentials > create credentials). While generating the new OAuth Client ID, designate a list of authorized origins and authorized redirect uris (These will be used for authenticating a user).
-4. Generate a new service account credential, create a key once the service account credential has been created and download the JSON file with your service account credential details. (Keep this file VERY secure, do not expose to git)
+4. Generate a new service account credential. Once the service account credential has been created, create a new key within the service account and download the JSON file with your service account credential details. (Keep this file VERY secure, do not expose to git)
 5. Create environment variable for local machine. `export GOOGLE_APPLICATION_CREDENTIALS='path-to-service-credentials-json-file'`. [See here for details](https://cloud.google.com/docs/authentication/getting-started)
 6. Generate both config files to store project environment variables: **config.env + .env**. *Once for server side and one for client side*
 7. Move service credential json (e.g. **my-project-name-6aty4rf61c7d.json**) file into root directory, along with both config files.
