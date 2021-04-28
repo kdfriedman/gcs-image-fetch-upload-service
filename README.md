@@ -36,6 +36,7 @@ STORAGE_BUCKET | storage bucket id created within google cloud platform
 GOOGLE_APPLICATION_CREDENTIALS | reference to service account credentials json file path
 STORAGE_BUCKET_NAME | name of storage bucket created within google cloud platform
 CREATIVE_IMAGE_ENDPOINT | endpoint to be used to fetch images to upload to gcp storage bucket
+ORG_DOMAIN | org domain, e.g. org-company.com
 
 .env | description
 ------------ | -------------
