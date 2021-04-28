@@ -6,8 +6,10 @@ exports.fetchData = async (data) => {
   if (!Array.isArray(data) || typeof data !== "object") return;
 
   const listOfImagePromises = data.map(async (row) => {
+    // manipulate csv data into acct id and file name strings for requests
     const splitIntoCol = row.split(",");
     const [acctId, creativeName] = splitIntoCol;
+    // fetch images from external resource
     try {
       const response = await axios.get(
         `${
@@ -17,6 +19,7 @@ exports.fetchData = async (data) => {
           responseType: "stream",
         }
       );
+      // store images in temp storage via temp-images directory prior to uploading to gcp storage buckets
       new Promise((resolve, reject) => {
         response.data
           .pipe(fs.createWriteStream(`./temp-images/${creativeName.trim()}`))

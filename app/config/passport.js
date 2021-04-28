@@ -9,10 +9,10 @@ module.exports = (passport) => {
         callbackURL: process.env.GOOGLE_CALLBACK_URI,
       },
       (accessToken, refreshToken, profile, done) => {
-        // 2nd check to verify that the user has a @hugeinc.com domain from their email
+        // 2nd check to verify that the user has a org domain from their email
         if (
           !profile?._json?.email_verified ||
-          profile?._json?.hd !== "hugeinc.com"
+          profile?._json?.hd !== process.env.ORG_DOMAIN
         ) {
           return done(new Error("You do not have suffcient access!"));
         }

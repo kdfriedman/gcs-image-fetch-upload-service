@@ -7,8 +7,8 @@ const passport = require("passport");
 router.get(
   "/google",
   passport.authenticate("google", {
-    // first check to prevent non-hugers from accessing app
-    hd: "hugeinc.com",
+    // first check to prevent non-org users from accessing app
+    hd: process.env.ORG_DOMAIN,
     // Ensure the user can always select an account when sent to Google.
     prompt: "select_account",
     scope: ["profile", "email"],
